@@ -1,0 +1,64 @@
+{
+  "_from": "azure-pipelines-tasks-webdeployment-common",
+  "_id": "azure-pipelines-tasks-webdeployment-common@3.0.3",
+  "_inBundle": false,
+  "_integrity": "sha512-beehc8jd1b/Wpe4RQXP123APTC4vWceMhtvrX2atJuWxbmfYsQ+WwXgUxxcIIWabOjpCjX/THIzQz+iuySaFfQ==",
+  "_location": "/azure-pipelines-tasks-webdeployment-common",
+  "_phantomChildren": {
+    "sax": "1.2.4",
+    "xmlbuilder": "11.0.1"
+  },
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "azure-pipelines-tasks-webdeployment-common",
+    "name": "azure-pipelines-tasks-webdeployment-common",
+    "escapedName": "azure-pipelines-tasks-webdeployment-common",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/azure-pipelines-tasks-webdeployment-common/-/azure-pipelines-tasks-webdeployment-common-3.0.3.tgz",
+  "_shasum": "8185e692ec7e175dda467e4f8f41fa5ae8094f8b",
+  "_spec": "azure-pipelines-tasks-webdeployment-common",
+  "_where": "C:\\src\\hmdev\\samples\\node-webapp\\src",
+  "author": {
+    "name": "Microsoft Corporation"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/azure-pipelines-tasks/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^10.17.0",
+    "archiver": "1.2.0",
+    "azure-pipelines-task-lib": "^3.1.0",
+    "decompress-zip": "0.3.0",
+    "ltx": "2.8.0",
+    "q": "1.4.1",
+    "winreg": "1.2.2",
+    "xml2js": "0.4.13",
+    "xmldom": "^0.1.27"
+  },
+  "deprecated": false,
+  "description": "Common Lib for MSDeploy Utility",
+  "devDependencies": {
+    "typescript": "4.0.2"
+  },
+  "homepage": "https://github.com/Microsoft/azure-pipelines-tasks#readme",
+  "license": "MIT",
+  "name": "azure-pipelines-tasks-webdeployment-common",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Microsoft/azure-pipelines-tasks.git"
+  },
+  "scripts": {
+    "build": "node ../build-scripts/downloadArchive.js https://vstsagenttools.blob.core.windows.net/tools/7zip/1/7zip.zip ./7zip &&  node ../build-scripts/downloadArchive.js https://vstsagenttools.blob.core.windows.net/tools/MSDeploy/3.6/M142/MSDeploy.zip ./MSDeploy3.6 &&  node make.js"
+  },
+  "version": "3.0.3"
+}
