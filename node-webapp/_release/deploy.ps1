@@ -54,30 +54,32 @@ if (!$env:KUDU_SYNC_CMD) {
 
 # :SelectNodeVersion
 
-# IF DEFINED KUDU_SELECT_NODE_VERSION_CMD (
-#   :: The following are done only on Windows Azure Websites environment
-#   call %KUDU_SELECT_NODE_VERSION_CMD% "%DEPLOYMENT_SOURCE%" "%DEPLOYMENT_TARGET%" "%DEPLOYMENT_TEMP%"
-#   IF !ERRORLEVEL! NEQ 0 goto error
+if ($env:KUDU_SELECT_NODE_VERSION_CMD) {
+  #   :: The following are done only on Windows Azure Websites environment
+  echo "trying to determine node version via '$env:KUDU_SELECT_NODE_VERSION_CMD'"
+  cmd /C $env:KUDU_SELECT_NODE_VERSION_CMD $env:DEPLOYMENT_SOURCE $env:DEPLOYMENT_TARGET $env:DEPLOYMENT_TEMP
+  if ($lastExitCode -ne 0) { throw "failed to select node version" }
 
-#   IF EXIST "%DEPLOYMENT_TEMP%\__nodeVersion.tmp" (
-#     SET /p NODE_EXE=<"%DEPLOYMENT_TEMP%\__nodeVersion.tmp"
-#     IF !ERRORLEVEL! NEQ 0 goto error
-#   )
+  if (test-path "$env:DEPLOYMENT_TEMP\__nodeVersion.tmp") {
+    $env:NODE_EXE = cat "$env:DEPLOYMENT_TEMP\__nodeVersion.tmp"    
+  }
   
-#   IF EXIST "%DEPLOYMENT_TEMP%\__npmVersion.tmp" (
-#     SET /p NPM_JS_PATH=<"%DEPLOYMENT_TEMP%\__npmVersion.tmp"
-#     IF !ERRORLEVEL! NEQ 0 goto error
-#   )
+  if (test-path "$env:DEPLOYMENT_TEMP\__npmVersion.tmp") {
+    $env:NPM_JS_PATH = cat "$env:DEPLOYMENT_TEMP\__npmVersion.tmp"
+  }
 
-#   IF NOT DEFINED NODE_EXE (
-#     SET NODE_EXE=node
-#   )
+    if (!$env:NODE_EXE) {
+      $env:NODE_EXE="node"
+    }
 
-#   SET NPM_CMD="!NODE_EXE!" "!NPM_JS_PATH!"
-# ) ELSE (
-$env:NPM_CMD = "npm"
-$env:NODE_EXE = "node"
-# )
+    $env:NPM_CMD="$env:NODE_EXE"
+    $env:NPM_ARGS="$env:NPM_JS_PATH"
+}
+else {
+  $env:NPM_CMD = "npm"
+  $env:NODE_EXE = "node"
+  $env:NPM_ARGS = ""
+}
 
 # goto :EOF
 
@@ -100,7 +102,8 @@ if ($env:IN_PLACE_DEPLOYMENT -ne "1") {
 if (test-path "$env:DEPLOYMENT_TARGET\package.json") {
   pushd $env:DEPLOYMENT_TARGET
   try {
-    & $env:NPM_CMD install --production
+    echo "npm install: '$env:NPM_CMD'"
+    & $env:NPM_CMD $env:NPM_ARGS install --production
     if ($lastExitCode -ne 0) { throw "npm install failed." }
   }
   finally {
